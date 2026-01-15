@@ -1,0 +1,47 @@
+create table asaas_clientes (
+	id bigserial primary key,
+	nome varchar(255),
+	email varchar(255),
+	cpf varchar(20),
+	telefone varchar(50),
+	cep varchar(20),
+	endereco varchar(255),
+	bairro varchar(100),
+	comum boolean default false,
+	emitido_nf boolean default false,
+	customer_id varchar(100),
+	gestao_click_id varchar(100),
+	deal_id_rd varchar(100),
+	termo_pdf_url varchar(500),
+	termo_pdf_data date,
+	fatura_id bigint,
+	formulario_id bigint,
+	sdr_id bigint,
+	pos_venda_id bigint,
+	vendedor_id bigint,
+	created_at timestamp default current_timestamp,
+	updated_at timestamp default current_timestamp
+);
+
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    senha VARCHAR(255),
+    telefone VARCHAR(50),
+    ramal_pabx VARCHAR(20),
+    foto_url VARCHAR(500),
+    ativo BOOLEAN DEFAULT TRUE,
+    cargo VARCHAR(50) NOT NULL,
+    id_rd_station VARCHAR(100),
+    id_digisac VARCHAR(100),
+    id_gestao_click VARCHAR(100),
+    digisac_conexao VARCHAR(100),
+    contador_negociacoes INTEGER DEFAULT 0,
+    contador_a INTEGER DEFAULT 0,
+    contador_b INTEGER DEFAULT 0,
+    contador_c INTEGER DEFAULT 0,
+    ultimo_cliente_data TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
