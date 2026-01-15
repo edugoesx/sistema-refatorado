@@ -1,0 +1,11 @@
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar pastas de dependências (elas são baixadas automaticamente depois)
+node_modules/
+target/
+.mvn/
+*.class
+.idea/
+.vscode/
