@@ -1,0 +1,101 @@
+CREATE TABLE asaas_boletos (
+    id BIGSERIAL PRIMARY KEY,
+    id_asaas_boleto VARCHAR(255),
+    nosso_numero VARCHAR(50),
+    valor DECIMAL(15, 2),
+    data_vencimento DATE,
+    data_vencimento_original DATE,
+    status VARCHAR(50),
+    link_boleto_url VARCHAR(500),
+    invoice_url VARCHAR(500),
+    parcela INTEGER,
+    gestao_click_recebimento VARCHAR(100),
+    fatura_id BIGINT,
+    cliente_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_boleto_fatura FOREIGN KEY (fatura_id) REFERENCES asaas_faturas(id),
+    CONSTRAINT fk_boleto_cliente FOREIGN KEY (cliente_id) REFERENCES asaas_clientes(id)
+);
+
+CREATE TABLE asaas_pagamentos (
+    id BIGSERIAL PRIMARY KEY,
+    pay_id VARCHAR(255),
+    status VARCHAR(50),
+    confirmado BOOLEAN DEFAULT FALSE,
+    boleto_id BIGINT,
+    fatura_id BIGINT,
+    cliente_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_pagamento_boleto FOREIGN KEY (boleto_id) REFERENCES asaas_boletos(id),
+    CONSTRAINT fk_pagamento_fatura FOREIGN KEY (fatura_id) REFERENCES asaas_faturas(id),
+    CONSTRAINT fk_pagamento_cliente FOREIGN KEY (cliente_id) REFERENCES asaas_clientes(id)
+);
+
+CREATE TABLE asaas_notafiscal (
+    id BIGSERIAL PRIMARY KEY,
+    id_asaas_nf VARCHAR(255),
+    pdf_url VARCHAR(500),
+    xml_url VARCHAR(500),
+    pagamento_id BIGINT,
+    cliente_id BIGINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_nf_pagamento FOREIGN KEY (pagamento_id) REFERENCES asaas_pagamentos(id),
+    CONSTRAINT fk_nf_cliente FOREIGN KEY (cliente_id) REFERENCES asaas_clientes(id)
+);
+
+CREATE TABLE metricas_ligacoes (
+    id BIGSERIAL PRIMARY KEY,
+    deal_id_rd VARCHAR(100),
+    atendeu BOOLEAN DEFAULT FALSE,
+    duracao_segundos INTEGER,
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sdr_id BIGINT,
+    CONSTRAINT fk_ligacao_sdr FOREIGN KEY (sdr_id) REFERENCES users(id)
+);
+
+CREATE TABLE qualificacoes_cliente (
+    id BIGSERIAL PRIMARY KEY,
+    cliente_id BIGINT,
+    sdr_responsavel_id BIGINT,
+    vendedor_destino_id BIGINT,
+    id_deal_rd VARCHAR(100),
+    etapa_negociacao_rd VARCHAR(100),
+    call_sid VARCHAR(100),
+    conversation_id VARCHAR(100),
+    perfil_cliente VARCHAR(255),
+    interesse_parceria VARCHAR(500),
+    o_que_busca VARCHAR(500),
+    ideia_funcionamento VARCHAR(500),
+    urgencia_prazo_retorno VARCHAR(255),
+    renda_anual VARCHAR(255),
+    renda_anual_obs TEXT,
+    fonte_renda VARCHAR(255),
+    trabalho_atual VARCHAR(255), 
+    valor_patrimonio VARCHAR(255),
+    valor_patrimonio_obs TEXT,
+    gasto_inesperado VARCHAR(255),
+    gasto_inesperado_obs TEXT,
+    usa_cartao_credito VARCHAR(255),
+    possui_restricao_nome VARCHAR(255),
+    area_disponivel VARCHAR(255),
+    estado_local VARCHAR(50),
+    cidade_local VARCHAR(100),
+    mora_no_local VARCHAR(255),
+    possui_outras_areas VARCHAR(255),
+    distancia_rede_eletrica VARCHAR(255),
+    tem_rede_eletrica BOOLEAN,
+    documentacao_status VARCHAR(255),
+    documentacao_obs TEXT,
+    maior_dificuldade TEXT,
+    objecao_gostaria_de_ver TEXT,
+    objecao_valor_local TEXT,
+    resumo_ia TEXT,
+    perguntas_ia TEXT,
+    arquivo_anexo_url VARCHAR(500),
+    gerou_venda BOOLEAN DEFAULT FALSE,
+    enviado_rd BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_qualif_cliente FOREIGN KEY (cliente_id) REFERENCES asaas_clientes(id),
+    CONSTRAINT fk_qualif_sdr FOREIGN KEY (sdr_responsavel_id) REFERENCES users(id),
+    CONSTRAINT fk_qualif_vendedor FOREIGN KEY (vendedor_destino_id) REFERENCES users(id)
+);

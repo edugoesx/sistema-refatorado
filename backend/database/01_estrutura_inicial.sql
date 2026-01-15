@@ -45,3 +45,19 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE asaas_faturas (
+    id BIGSERIAL PRIMARY KEY,
+    id_asaas VARCHAR(100),
+    gestao_click_id VARCHAR(100),
+    gestao_click_venda VARCHAR(100),
+    valor_total DECIMAL(15, 2),
+    data_vencimento DATE,
+    num_parcelas INTEGER,
+    installment VARCHAR(100),
+	link_carne_url VARCHAR(500),
+    link_fatura_url VARCHAR(500),
+    cartao BOOLEAN DEFAULT false,
+    cliente_id BIGINT, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_fatura_cliente FOREIGN KEY (cliente_id) REFERENCES asaas_clientes(id)
+);
